@@ -1,7 +1,8 @@
 const express = require("express");
 const carsRouter = express.Router();
 const path = require("path");
-const { carsDb: db } = require("../dataAccess");
+//const { carsDb: db } = require("../dataAccess");
+const { mongooseCarsDb: db } = require("../dataAccess");
 
 carsRouter.get("/addcar", function (_, res) {
   res.sendFile(path.join(__dirname, "..", "views", "addcar.html"));
@@ -13,9 +14,14 @@ carsRouter.get("/delcar", function (_, res) {
 
 carsRouter.post("/newcar", async (req, res) => {
   let newCar = req.body;
-  await db.addCar(newCar);
+  try {
+    await db.addCar(newCar);
 
-  res.redirect("/getcars");
+    res.redirect("/getcars");
+  } catch (err) {
+    console.error(err.message);
+    res.redirect("/invaliddata");
+  }
 });
 
 carsRouter.get("/getcars", async (_, res) => {

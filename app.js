@@ -23,6 +23,10 @@ app.get("/", function (_, res) {
   res.sendFile(path.join(__dirname, "views", "index.html"));
 });
 
+app.get("/invaliddata", function (_, res) {
+  res.sendFile(path.join(__dirname, "views", "invaliddata.html"));
+});
+
 app.get("*", function (_, res) {
   res.sendFile(path.join(__dirname, "views", "404.html"));
 });
